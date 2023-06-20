@@ -1,6 +1,7 @@
+import { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import DatePicker from "react-datepicker";
-import { useState } from 'react';
+import Button from '@mui/material/Button';
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -40,10 +41,9 @@ export const EventForm = () => {
                     <option value="Monthly" />
                     <option value="Annually" />
                 </datalist>
-
-
             </p>
-
+            <Button variant="outlined" size="large" className="Eventbutton"
+            >Add Event</Button>
         </div>
     </div>
 }
