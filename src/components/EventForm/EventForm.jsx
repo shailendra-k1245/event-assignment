@@ -9,7 +9,10 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
+
 import "react-datepicker/dist/react-datepicker.css";
+import { Paper } from '@mui/material';
+
 
 export const EventForm = () => {
     const [startDate, setStartDate] = useState(new Date());
@@ -27,21 +30,21 @@ export const EventForm = () => {
     }
 
     const handleSaveEvent = () => {
-       let existingArr = JSON.parse(localStorage.getItem("eventDetails")) || [];
+        let existingArr = JSON.parse(localStorage.getItem("eventDetails")) || [];
         existingArr.push({
-            name,startDate,endDate,recDays
+            name, startDate, endDate, recDays
         })
-        console.log("existing arr ",existingArr);
+        console.log("existing arr ", existingArr);
 
-        localStorage.setItem("eventDetails",JSON.stringify(existingArr));
+        localStorage.setItem("eventDetails", JSON.stringify(existingArr));
         setEventData(JSON.parse(localStorage.getItem("eventDetails")))
     }
 
     useEffect(() => {
         setEventData(JSON.parse(localStorage.getItem("eventDetails")))
-    }, [name,startDate,endDate,recDays])
+    }, [name, startDate, endDate, recDays])
 
-    console.log(eventData)
+
 
     return <div>
         <p className="text-3xl font-bold underline text-center my-9">
@@ -81,17 +84,34 @@ export const EventForm = () => {
                 onClick={handleSaveEvent}
             >Add Event</Button>
         </div>
-        <div>
-            <Table>
+
+        <TableContainer component={Paper} className="tableContainer" sx={{ width: 750 }}>
+            <Table  sx={{ width: 750 }}  aria-label="simple table" >
                 <TableHead>
-                <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell align="right">Start Date</TableCell>
-            <TableCell align="right">End Date</TableCell>
-            <TableCell align="right">Recurring Days</TableCell>
-          </TableRow>
+                    <TableRow>
+                        <TableCell  >Name</TableCell>
+                        <TableCell align="right" >Start Date</TableCell>
+                        <TableCell align="right" >End Date</TableCell>
+                        <TableCell align="right" >Recurring Days</TableCell>
+                    </TableRow>
                 </TableHead>
+                <TableBody>
+                    {eventData.map((row) => (
+                        <TableRow
+                            key={row.name}
+                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                        >
+                            <TableCell component="th" scope="row">
+                                {row.name}
+                            </TableCell>
+                            <TableCell align="right">{row.startDate}</TableCell>
+                            <TableCell align="right">{row.endDate}</TableCell>
+                            <TableCell align="right">{row.recDays}</TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
             </Table>
-        </div>
+        </TableContainer>
+
     </div>
 }
