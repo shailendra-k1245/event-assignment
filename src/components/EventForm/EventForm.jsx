@@ -8,6 +8,8 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import Multiselect from 'multiselect-react-dropdown';
+
 
 
 import "react-datepicker/dist/react-datepicker.css";
@@ -18,16 +20,16 @@ export const EventForm = () => {
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
     const [name, setName] = useState("");
-    const [recDays, setRecDays] = useState("");
+    const [recDays, setRecDays] = useState([]);
     const [eventData, setEventData] = useState([]);
 
     const handleName = (e) => {
         setName(e.target.value);
     }
 
-    const handleRecDays = (e) => {
-        setRecDays(e.target.value);
-    }
+    // const handleRecDays = (e) => {
+    //     setRecDays(e.target.value);
+    // }
 
     const handleSaveEvent = () => {
         let existingArr = JSON.parse(localStorage.getItem("eventDetails")) || [];
@@ -41,11 +43,24 @@ export const EventForm = () => {
     }
 
     useEffect(() => {
-        const data = JSON.parse(localStorage.getItem("eventDetails"))||[];
+        const data = JSON.parse(localStorage.getItem("eventDetails")) || [];
         setEventData(data);
     }, [name, startDate, endDate, recDays])
 
+    const options = [{ name: 'Monday', id: 1 }, { name: 'Tuesday', id: 2 },
+    { name: 'Wednesday', id: 3 }, { name: 'Thursday', id: 4 }, { name: 'Friday', id: 5 }, { name: 'Saturday', id: 6 }, { name: 'Sunday', id: 7 }]
 
+    const onSelect = (list)=>{
+        // console.log("list,item ",list,item)
+        setRecDays(list)
+    }
+
+    const onRemove = (list)=>{
+        // console.log("on remove",list,item)
+        setRecDays(list)
+    }
+
+    console.log('recdays ',recDays)
 
     return <div>
         <p className="text-3xl font-bold underline text-center my-9">
@@ -54,7 +69,7 @@ export const EventForm = () => {
         <div className='flex justify-center gap-9'>
             <div >
                 <TextField
-                    helperText="Please enter your name"
+                    helperText="Please enter event name"
                     id="demo-helper-text-misaligned"
                     label="Name"
                     onChange={handleName}
@@ -71,15 +86,21 @@ export const EventForm = () => {
 
             <div className="flex flex-col gap-y-2">
                 <p>Recurring days :</p>
-                <input list="browsers" name="browser" id="browser" placeholder='Recurring days'
+                {/* <input list="browsers" name="browser" id="browser" placeholder='Recurring days'
                     className='border-gray-50 border-opacity-20' onChange={handleRecDays} />
                 <datalist id="browsers">
-
                     <option value="Daily" />
                     <option value="Weekly" />
                     <option value="Monthly" />
                     <option value="Annually" />
-                </datalist>
+                </datalist> */}
+                <Multiselect
+                    options={options} 
+                    selectedValues={''}
+                    onSelect={onSelect} // Function will trigger on select event
+                    onRemove={onRemove} // Function will trigger on remove event
+                    displayValue="name" // Property name to display in the dropdown options
+                />
             </div>
             <Button variant="outlined" size="large" className="Eventbutton"
                 onClick={handleSaveEvent}
@@ -87,7 +108,7 @@ export const EventForm = () => {
         </div>
 
         <TableContainer component={Paper} className="tableContainer" sx={{ width: 750 }}>
-            <Table  sx={{ width: 750 }}  aria-label="simple table" >
+            <Table sx={{ width: 750 }} aria-label="simple table" >
                 <TableHead>
                     <TableRow>
                         <TableCell  >Name</TableCell>
@@ -107,7 +128,7 @@ export const EventForm = () => {
                             </TableCell>
                             <TableCell align="right">{row.startDate}</TableCell>
                             <TableCell align="right">{row.endDate}</TableCell>
-                            <TableCell align="right">{row.recDays}</TableCell>
+                            <TableCell align="right">{row.recDays.map((el)=>el.name+" ")}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
