@@ -41,7 +41,8 @@ export const EventForm = () => {
     }
 
     useEffect(() => {
-        setEventData(JSON.parse(localStorage.getItem("eventDetails")))
+        const data = JSON.parse(localStorage.getItem("eventDetails"))||[];
+        setEventData(data);
     }, [name, startDate, endDate, recDays])
 
 
