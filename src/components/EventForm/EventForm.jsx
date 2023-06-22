@@ -128,7 +128,7 @@ export const EventForm = () => {
                             </TableCell>
                             <TableCell align="right">{row.startDate}</TableCell>
                             <TableCell align="right">{row.endDate}</TableCell>
-                            <TableCell align="right">{row.recDays.map((el)=>el.name+" ")}</TableCell>
+                            <TableCell align="right">{row.recDays.map((el)=>el.name+" ")||""}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
